@@ -22,11 +22,12 @@ namespace Wunder.ClickOnceUninstaller
         public void Uninstall(UninstallInfo uninstallInfo, TextWriter debugLog)
         {
             var toRemove = FindComponentsToRemove(uninstallInfo.GetPublicKeyToken());
-
-            debugLog.WriteLine("Components to remove:");
-            toRemove.ForEach(debugLog.WriteLine);
-            debugLog.WriteLine();
-
+            if (debugLog != null)
+            {
+                debugLog.WriteLine("Components to remove:");
+                toRemove.ForEach(debugLog.WriteLine);
+                debugLog.WriteLine();
+            }
             var steps = new List<IUninstallStep>
                             {
                                 new RemoveFiles(),
@@ -35,11 +36,20 @@ namespace Wunder.ClickOnceUninstaller
                                 new RemoveUninstallEntry(uninstallInfo)
                             };
 
-            steps.ForEach(s => s.Prepare(toRemove));
-            steps.ForEach(s => s.PrintDebugInformation(debugLog));
-            steps.ForEach(s => s.Execute());
-
-            steps.ForEach(s => s.Dispose());
+            try
+            {
+                steps.ForEach(s => s.Prepare(toRemove));
+                if (debugLog != null)
+                {
+                    steps.ForEach(s => s.PrintDebugInformation(debugLog));
+                }
+                
+                steps.ForEach(s => s.Execute());
+            }
+            finally
+            {
+                steps.ForEach(s => s.Dispose());
+            }     
         }
 
         private List<string> FindComponentsToRemove(string token)
