@@ -2,6 +2,7 @@
 
 namespace Wunder.ClickOnceUninstaller
 {
+#if !LIBRARY
     class Program
     {
 
@@ -29,4 +30,5 @@ namespace Wunder.ClickOnceUninstaller
             Console.WriteLine("Uninstall complete");
         }
     }
+#endif
 }
