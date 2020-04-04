@@ -25,7 +25,7 @@ namespace Wunder.ClickOnceUninstaller
 
             Console.WriteLine("Uninstalling application \"{0}\"", appName);
             var uninstaller = new Uninstaller();
-            uninstaller.Uninstall(uninstallInfo);
+            uninstaller.Uninstall(uninstallInfo, Console.Out);
 
             Console.WriteLine("Uninstall complete");
         }

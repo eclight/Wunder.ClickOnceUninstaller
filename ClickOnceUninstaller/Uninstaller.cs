@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 
 namespace Wunder.ClickOnceUninstaller
 {
@@ -18,13 +19,13 @@ namespace Wunder.ClickOnceUninstaller
             _registry = registry;
         }
 
-        public void Uninstall(UninstallInfo uninstallInfo)
+        public void Uninstall(UninstallInfo uninstallInfo, TextWriter debugLog)
         {
             var toRemove = FindComponentsToRemove(uninstallInfo.GetPublicKeyToken());
 
-            Console.WriteLine("Components to remove:");
-            toRemove.ForEach(Console.WriteLine);
-            Console.WriteLine();
+            debugLog.WriteLine("Components to remove:");
+            toRemove.ForEach(debugLog.WriteLine);
+            debugLog.WriteLine();
 
             var steps = new List<IUninstallStep>
                             {
@@ -35,7 +36,7 @@ namespace Wunder.ClickOnceUninstaller
                             };
 
             steps.ForEach(s => s.Prepare(toRemove));
-            steps.ForEach(s => s.PrintDebugInformation());
+            steps.ForEach(s => s.PrintDebugInformation(debugLog));
             steps.ForEach(s => s.Execute());
 
             steps.ForEach(s => s.Dispose());

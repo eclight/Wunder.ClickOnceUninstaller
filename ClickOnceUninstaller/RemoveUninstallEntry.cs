@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.Win32;
 
 namespace Wunder.ClickOnceUninstaller
@@ -19,14 +20,14 @@ namespace Wunder.ClickOnceUninstaller
             _uninstall = Registry.CurrentUser.OpenSubKey(UninstallInfo.UninstallRegistryPath, true);
         }
 
-        public void PrintDebugInformation()
+        public void PrintDebugInformation(TextWriter debugLog)
         {
             if (_uninstall == null)
                 throw new InvalidOperationException("Call Prepare() first.");
 
-            Console.WriteLine("Remove uninstall info from " + _uninstall.OpenSubKey(_uninstallInfo.Key).Name);
+            debugLog.WriteLine("Remove uninstall info from " + _uninstall.OpenSubKey(_uninstallInfo.Key).Name);
 
-            Console.WriteLine();
+            debugLog.WriteLine();
         }
 
         public void Execute()

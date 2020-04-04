@@ -44,25 +44,25 @@ namespace Wunder.ClickOnceUninstaller
             }
         }
 
-        public void PrintDebugInformation()
+        public void PrintDebugInformation(TextWriter debugLog)
         {
             if (string.IsNullOrEmpty(_clickOnceFolder) || !Directory.Exists(_clickOnceFolder))
                 throw new InvalidOperationException("Call Prepare() first.");
 
-            Console.WriteLine("Remove files from " + _clickOnceFolder);
-            Console.WriteLine("Remove files from " + _clickOnceDataFolder);
+            debugLog.WriteLine("Remove files from " + _clickOnceFolder);
+            debugLog.WriteLine("Remove files from " + _clickOnceDataFolder);
 
             foreach (var folder in _foldersToRemove)
             {
-                Console.WriteLine("Delete folder " + folder.Substring(_clickOnceFolder.Length + 1));
+                debugLog.WriteLine("Delete folder " + folder.Substring(_clickOnceFolder.Length + 1));
             }
 
             foreach (var file in _filesToRemove)
             {
-                Console.WriteLine("Delete file " + file.Substring(_clickOnceFolder.Length + 1));
+                debugLog.WriteLine("Delete file " + file.Substring(_clickOnceFolder.Length + 1));
             }
 
-            Console.WriteLine();
+            debugLog.WriteLine();
         }
 
         public void Execute()

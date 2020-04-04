@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 
 namespace Wunder.ClickOnceUninstaller
@@ -7,7 +8,7 @@ namespace Wunder.ClickOnceUninstaller
     {
         void Prepare(List<string> componentsToRemove);
 
-        void PrintDebugInformation();
+        void PrintDebugInformation(TextWriter debugLog);
 
         void Execute();
     }

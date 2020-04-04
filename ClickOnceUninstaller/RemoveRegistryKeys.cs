@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using Microsoft.Win32;
 
 namespace Wunder.ClickOnceUninstaller
@@ -87,22 +88,22 @@ namespace Wunder.ClickOnceUninstaller
             }
         }
 
-        public void PrintDebugInformation()
+        public void PrintDebugInformation(TextWriter debugLog)
         {
             if (_keysToRemove == null)
                 throw new InvalidOperationException("Call Prepare() first.");
 
             foreach (var key in _keysToRemove)
             {
-                Console.WriteLine("Delete key {0} in {1}", key.Parent, key.ItemName);
+                debugLog.WriteLine("Delete key {0} in {1}", key.Parent, key.ItemName);
             }
 
             foreach (var value in _valuesToRemove)
             {
-                Console.WriteLine("Delete value {0} in {1}", value.Parent, value.ItemName);
+                debugLog.WriteLine("Delete value {0} in {1}", value.Parent, value.ItemName);
             }
 
-            Console.WriteLine();
+            debugLog.WriteLine();
         }
 
         public void Execute()
