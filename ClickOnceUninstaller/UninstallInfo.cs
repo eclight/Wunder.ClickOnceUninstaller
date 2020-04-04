@@ -27,17 +27,23 @@ namespace Wunder.ClickOnceUninstaller
                 {
                     var sub = uninstall.OpenSubKey(app);
 
-                    yield return new UninstallInfo
+                    if (sub != null
+                        && sub.GetValue("UninstallString") is string uninstallString
+                        && uninstallString.Contains("ShArpMaintain"))
                     {
-                        Key = app,
-                        DisplayName = sub.GetValue("DisplayName") as string,
-                        UninstallString = sub.GetValue("UninstallString") as string,
-                        ShortcutFolderName = sub.GetValue("ShortcutFolderName") as string,
-                        ShortcutSuiteName = sub.GetValue("ShortcutSuiteName") as string,
-                        ShortcutFileName = sub.GetValue("ShortcutFileName") as string,
-                        SupportShortcutFileName = sub.GetValue("SupportShortcutFileName") as string,
-                        Version = sub.GetValue("DisplayVersion") as string
-                    };
+
+                        yield return new UninstallInfo
+                        {
+                            Key = app,
+                            DisplayName = sub.GetValue("DisplayName") as string,
+                            UninstallString = sub.GetValue("UninstallString") as string,
+                            ShortcutFolderName = sub.GetValue("ShortcutFolderName") as string,
+                            ShortcutSuiteName = sub.GetValue("ShortcutSuiteName") as string,
+                            ShortcutFileName = sub.GetValue("ShortcutFileName") as string,
+                            SupportShortcutFileName = sub.GetValue("SupportShortcutFileName") as string,
+                            Version = sub.GetValue("DisplayVersion") as string
+                        };
+                    }
                 }
             }
         }
